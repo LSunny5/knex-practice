@@ -7,18 +7,38 @@ const knexInstance = knex({
   })
 
 //get all items that contain text
+function searchName(searchTerm) {
+    knexInstance
+      .select('*')
+      .from('shopping_list')
+      .where('name', 'ILIKE', `%${searchTerm}%`)
+      .then(result => {
+        console.log('Search results:  ', { searchTerm })
+        console.log(result)
+      })
+  }
+  
+  searchName('izz');
+  //returns one result
 
-
-//A function that takes one parameter for searchTerm which will be any string
-//The function will query the shopping_list table using Knex methods and select the rows which have a name that contains the searchTerm using a case insensitive match.
-
+  
 //get all items paginated
-
-
-
-
-//A function that takes one parameter for pageNumber which will be a number
-//The function will query the shopping_list table using Knex methods and select the pageNumber page of rows paginated to 6 items per page.
+function paginateItems(pageNumber) {
+    const limit = 6
+    const offset = limit * (pageNumber - 1)
+    knexInstance
+      .select('*')
+      .from('shopping_list')
+      .limit(limit)
+      .offset(offset)
+      .then(result => {
+        console.log('Paginate items:  ', pageNumber)
+        console.log(result)
+      })
+  }
+  
+  paginateItems(3)
+  //6 results for paginateItems
 
 //get all items added after date
 
